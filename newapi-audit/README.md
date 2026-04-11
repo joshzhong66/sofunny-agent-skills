@@ -54,13 +54,9 @@
 本技能运行时 **无需任何第三方依赖**，完全拥抱 Python 原生生态支持！
 
 ```bash
-# 进入你想存放克隆包的本地目录
-git clone git@github.com:joshzhong66/sofunny-agent-skills.git
-cd sofunny-agent-skills
+# 1. 运行本命令行工具 (使用 -d / --dir 指定您本机数据库日志的大目录)
+python newapi_audit_skill.py -d "F:\NewAPI\newapi_log_file"
 
-# 执行本命令行工具！(使用 -d / --dir 指定日志的大目录)
-python skills/newapi-audit/newapi_audit_skill.py -d "F:\NewAPI\newapi_log_file"
-
-# 如果你现在就处于你的日志文件夹下，直接省略目录参数执行：
-python skills/newapi-audit/newapi_audit_skill.py
+# 2. 如果不指定目录参数，默认扫描当前所在目录
+python newapi_audit_skill.py
 ```
