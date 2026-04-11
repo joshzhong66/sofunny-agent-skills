@@ -1,0 +1,9 @@
+{
+  "tag_name": "v1.0.0",
+  "target_commitish": "main",
+  "name": "NewAPI PostgreSQL 流式审计自动化技能 V8 发布",
+  "body": "## 🌟 核心特性\n- **内存防爆极速引擎**: 流式处理几 GB 级别的超大 PostgreSQL 日志，0 内存膨胀。\n- **万能提取器**: 支持混合解析标准 `COPY` 及 `INSERT INTO` 各种断层及特殊字符，再不会漏读数据。\n- **智解压缩**: 原生支持 `.zip`, `.gz`, `.tar.gz` 自动化后台解压，拒绝人工介入。\n- **终端美学与 AI Native**: 内置 `CLAUDE.md` 及 `Codex.md` 规则，全面接管 AI Agent 工具链的输出渲染与认知，带有全等宽中英文表格适配。\n\n## 🔧 使用方式\n本地克隆后，可在终端通过 Python 零第三方依赖直击运行：\n```bash\npython skills/newapi-audit/newapi_audit_skill.py -d \"你的日志路径\"\n```",
+  "draft": false,
+  "prerelease": false,
+  "generate_release_notes": false
+}
