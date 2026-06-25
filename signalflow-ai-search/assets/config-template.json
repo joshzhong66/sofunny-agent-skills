@@ -1,0 +1,10 @@
+{
+  "apify_api_base": "https://api.apify.com/v2",
+  "apify_api_token": "apify_api_replace_me",
+  "apify_actor_id": "sUXx8U35FLlaweCWO",
+  "apify_default_dataset_id": "bsCDoyAW1bexhbTle",
+  "wait_for_finish": 180,
+  "save_output_summary": true,
+  "save_preview_items": true,
+  "output_dir": "outputs"
+}
