@@ -1,0 +1,9 @@
+node_modules/
+public/uploads/*
+!public/uploads/.gitkeep
+history/videos/
+history/records.json
+seedance-downloads/
+seedance-local.bundle
+.env
+*.log

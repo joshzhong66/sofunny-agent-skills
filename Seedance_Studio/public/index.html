@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seedance Studio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <div class="logo-icon"><i class="ti ti-aperture"></i></div>
+        <span class="logo-text">Seedance Studio</span>
+      </div>
+      <div class="top-bar-right">
+        <button class="btn-settings" id="btnSettings" title="设置">
+          <i class="ti ti-settings"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-grid">
+      <!-- Left Panel: Input -->
+      <section class="panel-left">
+        <!-- Reference Material -->
+        <div class="section-block">
+          <p class="section-title">参考素材（可选）</p>
+          <div class="upload-row" id="uploadRow">
+            <div class="upload-slot" id="imageSlot" data-type="image">
+              <i class="ti ti-photo-plus"></i>
+              <span>图片</span>
+              <input type="file" accept="image/*" hidden>
+            </div>
+            <div class="upload-slot" id="videoSlot" data-type="video">
+              <i class="ti ti-video-plus"></i>
+              <span>视频</span>
+              <input type="file" accept="video/*" hidden>
+            </div>
+          </div>
+          <div class="preview-row" id="previewRow" style="display:none;"></div>
+        </div>
+
+        <!-- Prompt -->
+        <div class="section-block">
+          <p class="section-title">提示词</p>
+          <textarea id="promptInput" rows="5" placeholder="描述你想生成的画面…或先在下方选一个风格模板"></textarea>
+          <div class="prompt-actions">
+            <span class="template-hint" id="templateHint"></span>
+            <button class="btn-expand" id="btnExpand">
+              <i class="ti ti-sparkles"></i>
+              AI 帮我扩写提示词
+            </button>
+          </div>
+        </div>
+
+        <!-- Style Templates -->
+        <div class="section-block">
+          <p class="section-title">风格模板</p>
+          <div class="style-tags" id="styleTags">
+            <button class="tag active" data-style="cinematic"><i class="ti ti-movie"></i>电影感</button>
+            <button class="tag" data-style="anime"><i class="ti ti-brush"></i>动漫</button>
+            <button class="tag" data-style="ugc"><i class="ti ti-device-mobile"></i>UGC</button>
+            <button class="tag" data-style="ad"><i class="ti ti-shopping-bag"></i>广告/产品</button>
+            <button class="tag" data-style="meme"><i class="ti ti-mood-smile"></i>梗/meme</button>
+            <button class="tag" data-style="more"><i class="ti ti-dots"></i>更多</button>
+          </div>
+        </div>
+
+        <!-- Prompt Gallery Modal Trigger -->
+        <div class="section-block">
+          <button class="btn-gallery" id="btnGallery">
+            <i class="ti ti-template"></i>
+            浏览提示词库
+          </button>
+        </div>
+      </section>
+
+      <!-- Right Panel: Settings + Preview -->
+      <section class="panel-right">
+        <!-- Parameters -->
+        <div class="params-card">
+          <p class="section-title">生成参数</p>
+
+          <div class="param-row">
+            <span class="param-label">画幅</span>
+            <div class="param-group" id="aspectGroup">
+              <button class="param-btn" data-value="9:16">
+                <span class="aspect-icon aspect-portrait"></span>
+                <span>9:16</span>
+              </button>
+              <button class="param-btn active" data-value="16:9">
+                <span class="aspect-icon aspect-landscape"></span>
+                <span>16:9</span>
+              </button>
+              <button class="param-btn" data-value="1:1">
+                <span class="aspect-icon aspect-square"></span>
+                <span>1:1</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="param-row">
+            <span class="param-label">时长</span>
+            <div class="param-group" id="durationGroup">
+              <button class="param-btn active" data-value="5">5s</button>
+              <button class="param-btn" data-value="10">10s</button>
+              <button class="param-btn" data-value="15">15s</button>
+            </div>
+          </div>
+
+          <div class="param-row">
+            <span class="param-label">分辨率</span>
+            <select id="resolutionSelect" class="param-select">
+              <option value="480p">480p</option>
+              <option value="720p" selected>720p</option>
+              <option value="1080p">1080p</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Preview Area -->
+        <div class="preview-card">
+          <div class="preview-area" id="previewArea">
+            <!-- Viewfinder corners -->
+            <span class="vf-corner vf-tl"></span>
+            <span class="vf-corner vf-tr"></span>
+            <span class="vf-corner vf-bl"></span>
+            <span class="vf-corner vf-br"></span>
+            <!-- Timer -->
+            <div class="vf-timer" id="vfTimer">
+              <span class="vf-dot"></span>
+              <span id="timerText">00:00:00</span>
+            </div>
+            <!-- Content states -->
+            <div class="preview-idle" id="previewIdle">
+              <i class="ti ti-video"></i>
+              <span>等待生成</span>
+            </div>
+            <div class="preview-loading" id="previewLoading" style="display:none;">
+              <div class="spinner"></div>
+              <span id="loadingText">生成中...</span>
+              <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+            </div>
+            <div class="preview-result" id="previewResult" style="display:none;">
+              <video id="resultVideo" controls></video>
+            </div>
+            <div class="preview-error" id="previewError" style="display:none;">
+              <i class="ti ti-alert-triangle"></i>
+              <span id="errorText">生成失败</span>
+              <button class="btn-retry" id="btnRetry">重试</button>
+            </div>
+          </div>
+          <button class="btn-generate" id="btnGenerate">
+            <i class="ti ti-player-play-filled"></i>
+            生成视频
+          </button>
+          <p class="cost-hint" id="costHint">预计消耗约 12 积分</p>
+        </div>
+
+        <div class="history-card">
+          <div class="history-header">
+            <div>
+              <p class="section-title">历史生成</p>
+              <p class="history-subtitle">视频会保存到项目目录 `history/videos`</p>
+            </div>
+            <button class="history-refresh" id="btnHistoryRefresh" type="button">
+              <i class="ti ti-refresh"></i>
+              刷新
+            </button>
+          </div>
+          <div class="history-list" id="historyList">
+            <div class="history-empty">还没有历史记录</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Prompt Gallery Modal -->
+  <div class="modal-overlay" id="galleryModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h3><i class="ti ti-template"></i> 提示词库</h3>
+        <button class="modal-close" id="modalClose"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="modal-search">
+        <i class="ti ti-search"></i>
+        <input type="text" id="gallerySearch" placeholder="搜索提示词...">
+      </div>
+      <div class="modal-filter" id="galleryFilter">
+        <button class="filter-btn active" data-cat="all">全部</button>
+        <button class="filter-btn" data-cat="cinematic">电影感</button>
+        <button class="filter-btn" data-cat="anime">动漫</button>
+        <button class="filter-btn" data-cat="ugc">UGC</button>
+        <button class="filter-btn" data-cat="ad">广告</button>
+        <button class="filter-btn" data-cat="meme">梗/meme</button>
+      </div>
+      <div class="modal-body" id="galleryBody"></div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal" style="display:none;">
+    <div class="modal settings-modal">
+      <div class="modal-header">
+        <h3><i class="ti ti-settings"></i> 设置</h3>
+        <button class="modal-close" id="settingsClose"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="modal-body settings-body">
+        <div class="settings-section">
+          <h4 class="settings-section-title">API 配置</h4>
+          <div class="settings-row">
+            <label class="settings-label">NewAPI 地址</label>
+            <input type="text" id="settingsApiUrl" class="settings-input" placeholder="https://your-api-domain.com">
+            <span class="settings-hint">NewAPI 代理服务地址</span>
+          </div>
+          <div class="settings-row">
+            <label class="settings-label">API Key</label>
+            <input type="password" id="settingsApiKey" class="settings-input" placeholder="sk-...">
+            <span class="settings-hint">你的 API Key</span>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h4 class="settings-section-title">模型配置</h4>
+          <div class="settings-row">
+            <label class="settings-label">视频生成模型</label>
+            <input type="text" id="settingsSeedanceModel" class="settings-input" placeholder="doubao-seedance-2-0-260128">
+            <span class="settings-hint">Seedance 视频生成模型名称</span>
+          </div>
+          <div class="settings-row">
+            <label class="settings-label">AI 扩写模型</label>
+            <input type="text" id="settingsLlmModel" class="settings-input" placeholder="deepseek-v4-pro">
+            <span class="settings-hint">用于 AI 提示词扩写的模型</span>
+          </div>
+        </div>
+        <div class="settings-actions">
+          <button class="btn-settings-save" id="btnSettingsSave">
+            <i class="ti ti-check"></i> 保存设置
+          </button>
+          <button class="btn-settings-reset" id="btnSettingsReset">
+            <i class="ti ti-refresh"></i> 恢复默认
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,6 +1,3 @@
-# 内部服务项目 - 不上传到公开github
-Seedance_Studio/
-
 # 环境变量和敏感配置
 .env
 .env.local
