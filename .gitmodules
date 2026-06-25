@@ -1,0 +1,3 @@
+[submodule "signalflow-ai-search"]
+	path = signalflow-ai-search
+	url = git@10.20.3.67:zhongjinlin/ai_search_tools.git
