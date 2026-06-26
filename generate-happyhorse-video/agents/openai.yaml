@@ -1,0 +1,7 @@
+interface:
+  display_name: "HappyHorse 视频生成"
+  short_description: "通过中转平台调用 HappyHorse 模型生成文生视频"
+  default_prompt: "使用 $generate-happyhorse-video 提交 HappyHorse 视频生成任务，并返回视频下载链接。"
+
+policy:
+  allow_implicit_invocation: true
