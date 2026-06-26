@@ -1,0 +1,7 @@
+interface:
+  display_name: "飞书巡检填报"
+  short_description: "为当前飞书设备巡检表批量创建当天巡检记录并默认填写正常项"
+  default_prompt: "使用 $fill-feishu-inspection-records 为当前飞书设备巡检表填写今天的巡检记录。"
+
+policy:
+  allow_implicit_invocation: true

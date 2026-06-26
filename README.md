@@ -6,6 +6,7 @@ AI Agent 技能集合，用于视频生成和数据采集任务。
 
 ```
 sofunny-agent-skills/
+├── fill-feishu-inspection-records/ # 飞书巡检填报技能
 ├── generate-seedance-video/    # Seedance视频生成技能
 ├── generate-happyhorse-video/  # HappyHorse视频生成技能
 ├── Seedance_Studio/            # 视频生成Web UI服务
@@ -13,6 +14,26 @@ sofunny-agent-skills/
 ```
 
 ## 技能介绍
+
+### fill-feishu-inspection-records
+
+飞书巡检填报技能，用于当前 Sofunny 飞书设备巡检多维表的当天批量填报。
+
+**功能：**
+- 按设备表当前顺序选取前 26 台设备
+- 批量创建当天巡检记录
+- 默认填写“正常”项并留空巡检照片
+- 自动跳过当天已存在的重复记录
+
+**使用方式：**
+```bash
+python scripts/fill_feishu_inspections.py
+```
+
+**预览模式：**
+```bash
+python scripts/fill_feishu_inspections.py --dry-run
+```
 
 ### generate-seedance-video
 
@@ -124,9 +145,15 @@ NewAPI (上游接口) → DashScope
 
 ## 环境要求
 
+- Python 3.x (`fill-feishu-inspection-records`, `signalflow-ai-search`)
 - Node.js (Seedance_Studio)
-- Python 3.x (signalflow-ai-search)
 - API Key (根据技能配置)
+
+## 维护说明
+
+- 根 `README.md` 是本仓库 skill 索引入口。
+- 新增、删除或重命名 skill 时，必须同步更新目录树和技能介绍。
+- 技能细节以各自目录下的 `SKILL.md` 为准，根 README 只保留索引和简述。
 
 ## 许可证
 
