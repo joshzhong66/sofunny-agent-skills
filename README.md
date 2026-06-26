@@ -6,7 +6,8 @@ AI Agent 技能集合，用于视频生成和数据采集任务。
 
 ```
 sofunny-agent-skills/
-├── generate-seedance-video/    # AI视频生成技能
+├── generate-seedance-video/    # Seedance视频生成技能
+├── generate-happyhorse-video/  # HappyHorse视频生成技能
 ├── Seedance_Studio/            # 视频生成Web UI服务
 └── signalflow-ai-search/       # 小红书数据采集技能
 ```
@@ -29,6 +30,31 @@ node scripts/generate-video.js \
   --api-key "sk-xxx" \
   --prompt "15秒电影感教室纯爱短片" \
   --service-url "http://10.20.3.69:3001"
+```
+
+### generate-happyhorse-video
+
+HappyHorse 视频生成技能，支持文生视频、图生视频、参考生视频和视频编辑。
+
+**支持的模型：**
+- `happyhorse-1.1-t2v` / `happyhorse-1.0-t2v` - 文生视频
+- `happyhorse-1.1-i2v` / `happyhorse-1.0-i2v` - 图生视频
+- `happyhorse-1.1-r2v` / `happyhorse-1.0-r2v` - 参考生视频
+- `happyhorse-1.0-edit` - 视频编辑
+
+**使用方式：**
+```bash
+# 文生视频
+node scripts/generate-video.js \
+  --api-key "sk-xxx" \
+  --prompt "一匹欢乐的小马在海边奔跑"
+
+# 图生视频
+node scripts/generate-video.js \
+  --api-key "sk-xxx" \
+  --prompt "让图片中的小马跑起来" \
+  --model "happyhorse-1.1-i2v" \
+  --image-url "https://example.com/horse.jpg"
 ```
 
 ### Seedance_Studio
@@ -84,11 +110,17 @@ generate-seedance-video (AI技能)
 Seedance_Studio (Web服务)
         ↓ 代理
 NewAPI (上游接口)
+
+generate-happyhorse-video (AI技能)
+        ↓ 调用
+Seedance_Studio (Web服务)
+        ↓ 代理
+NewAPI (上游接口) → DashScope
 ```
 
-- `generate-seedance-video` 是 AI 可调用的技能
+- `generate-seedance-video` 和 `generate-happyhorse-video` 是 AI 可调用的技能
 - `Seedance_Studio` 是 Web UI 服务
-- 两者配合使用，技能通过服务提交和轮询视频任务
+- 技能通过服务提交和轮询视频任务
 
 ## 环境要求
 
